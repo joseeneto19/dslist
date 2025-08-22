@@ -3,6 +3,7 @@ package com.joseeneto19.dslist.services;
 import com.joseeneto19.dslist.dto.GameDTO;
 import com.joseeneto19.dslist.dto.GameMiniDTO;
 import com.joseeneto19.dslist.entities.Game;
+import com.joseeneto19.dslist.projections.GameMinProjection;
 import com.joseeneto19.dslist.repositories.GameRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,12 @@ public class GameService {
     @Transactional(readOnly = true)
     public List<GameMiniDTO> findAll() {
         List<Game> result = gameRepository.findAll();
+        return result.stream().map(x-> new GameMiniDTO(x)).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<GameMiniDTO> findByList(Long listId) {
+        List<GameMinProjection> result = gameRepository.searchByList(listId);
         return result.stream().map(x-> new GameMiniDTO(x)).toList();
     }
 
